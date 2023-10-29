@@ -10,9 +10,6 @@ namespace LangCard.Api
 
         public DatabaseThingy()
         {
-            
-
-            
             var project = GetVar("DATASTOREDB_PROJECT");
             
             var devMode = GetVar("DEVMODE");
