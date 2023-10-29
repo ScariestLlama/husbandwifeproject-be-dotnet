@@ -10,17 +10,17 @@ namespace LangCard.Api
 
         public DatabaseThingy()
         {
-            var envVars = Environment.GetEnvironmentVariables();
+            
 
             
-            var project = envVars["DATASTOREDB_PROJECT"].ToString();
+            var project = GetVar("DATASTOREDB_PROJECT");
             
-            var devMode = envVars["DEVMODE"].ToString();
+            var devMode = GetVar("DEVMODE");
 
             if(devMode.Equals("true", StringComparison.OrdinalIgnoreCase))
             {
-                var host = envVars["DATASTOREDB_HOST"].ToString();
-                var port = Convert.ToInt32(envVars["DATASTOREDB_PORT"]);
+                var host = GetVar("DATASTOREDB_HOST");
+                var port = Convert.ToInt32(GetVar("DATASTOREDB_PORT"));
 
                 var dsBuilder = new DatastoreClientBuilder();
                 dsBuilder.ChannelCredentials = ChannelCredentials.Insecure;
@@ -36,6 +36,19 @@ namespace LangCard.Api
 
             
         }
+
+        private string GetVar(string name)
+        {
+            var envVars = Environment.GetEnvironmentVariables();
+
+            if(!envVars.Contains(name))
+            {
+                return string.Empty;
+            }
+
+            return envVars[name].ToString();
+        }
+
 
         public async Task<List<T>> Select<T>(string from) where T : class, new()
         {
