@@ -41,4 +41,6 @@ app.MapPost("/card", async ([FromBody] CardRequest model) =>
     return model;
 });
 
+app.MapGet("/info", () => $"OK - {DateTime.UtcNow:s}");
+
 app.Run();
