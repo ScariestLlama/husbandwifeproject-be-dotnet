@@ -10,6 +10,7 @@ services:
       - DATASTOREDB_HOST=datastore
       - DATASTOREDB_PROJECT=langproject
       - DATASTOREDB_PORT=8081
+      - DEVMODE=true
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.langcard.rule=Host(`lang.localhost`)"
