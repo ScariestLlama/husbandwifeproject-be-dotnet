@@ -30,8 +30,6 @@ namespace LangCard.Api
             {
                 _db = DatastoreDb.Create(project);
             }
-
-            
         }
 
         private string GetVar(string name)
