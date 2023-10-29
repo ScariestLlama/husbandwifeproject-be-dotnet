@@ -3,6 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var cloudMode = (Environment.GetEnvironmentVariable("PORT") ?? "false") != "false";
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+var url = string.Concat("http://0.0.0.0:", port);
+
+if(cloudMode)
+{
+    builder.WebHost.UseUrls(url);
+}
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
