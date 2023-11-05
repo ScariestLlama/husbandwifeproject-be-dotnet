@@ -32,12 +32,13 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
  
   datastore:
-    image: milesmcc/gcp-emulator #storytel/gcp-datastore-emulator #singularities/datastore-emulator
+    image: google/cloud-sdk
+    command: gcloud beta emulators datastore start --no-store-on-disk --host-port=0.0.0.0:8081
+    ports:
+      - "8081:8081"
     environment:
-      - DATASTORE_PROJECT_ID=langproject
+      - CLOUDSDK_CORE_PROJECT=langproject
       - DATASTORE_LISTEN_ADDRESS=0.0.0.0:8081
-
-
 
   datastore-ui:
     image: skarpdev/google-datastore-ui:1.0.0
@@ -55,30 +56,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.dbviewer.rule=Host(`dbviewer.localhost`)"
       - "traefik.http.routers.dbviewer.entrypoints=web"
- 
 
-  whoami:
-    image: "traefik/whoami"
-    container_name: "simple-service"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
-      - "traefik.http.routers.whoami.entrypoints=web"
-
-
-  jenkins:
-    image: jenkins/jenkins:lts
-    privileged: true
-    user: root
-    ports:
-      - 9080:8080
-      - 50000:50000
-    container_name: jenkins
-    volumes:
-      - /home/${myname}/jenkins_compose/jenkins_configuration:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.jenkins.rule=Host(`jenkins.localhost`)"
-      - "traefik.http.routers.jenkins.entrypoints=web"
+  
 
